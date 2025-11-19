@@ -1,0 +1,32 @@
+<header class="flex items-center justify-between px-4 py-2 border-b">
+  <div class="flex items-baseline gap-2">
+    <span class="text-xs text-gray-500 leading-none">
+      {{ chat?.createdAt | date : "dd. MMM. yyyy" }}
+    </span>
+
+    <span class="text-sm font-semibold leading-none">
+      {{ chat?.title }}
+    </span>
+  </div>
+
+  <div class="flex items-center gap-3 text-xs text-gray-500">
+    @if (chat?.messages?.length) { @if (autoSave) {
+    <span>Saved</span>
+    } @else {
+    <button mat-stroked-button color="primary" (click)="saveClicked.emit()">
+      Save chat
+    </button>
+    } }
+
+    <button mat-icon-button [matMenuTriggerFor]="menu">
+      <mat-icon>more_vert</mat-icon>
+    </button>
+
+    <mat-menu #menu="matMenu">
+      <button mat-menu-item>
+        <mat-icon>delete</mat-icon>
+        <span>Delete chat</span>
+      </button>
+    </mat-menu>
+  </div>
+</header>

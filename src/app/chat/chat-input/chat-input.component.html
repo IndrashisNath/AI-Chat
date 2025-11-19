@@ -1,0 +1,63 @@
+<div class="w-full flex justify-center">
+  <div class="w-full max-w-3xl">
+    <div class="bg-white rounded-2xl border border-gray-200 px-4 py-3">
+      <mat-form-field
+        appearance="fill"
+        class="w-full mat-no-hover !bg-transparent m-0 p-0 [&_.mdc-text-field--filled]:!bg-transparent [&_.mdc-text-field__ripple]:hidden [&_.mdc-line-ripple]:hidden [&_.mdc-notched-outline]:hidden [&_.mat-mdc-form-field-bottom-align]:hidden"
+      >
+        <textarea
+          matInput
+          cdkTextareaAutosize
+          cdkAutosizeMinRows="1"
+          cdkAutosizeMaxRows="6"
+          class="block w-full resize-none bg-transparent outline-none text-sm placeholder-gray-400 pt-1"
+          placeholder="Ask anything ..."
+          [(ngModel)]="value"
+          (keydown.enter.exact)="onSendClick(); $event.preventDefault()"
+        ></textarea>
+      </mat-form-field>
+
+      <div class="flex items-center justify-between mt-3 text-gray-600">
+        <div class="flex items-center gap-1 text-gray-500">
+          <button mat-icon-button>
+            <mat-icon>folder_open</mat-icon>
+          </button>
+          <button mat-icon-button>
+            <mat-icon>format_bold</mat-icon>
+          </button>
+          <button mat-icon-button>
+            <mat-icon>attach_file</mat-icon>
+          </button>
+        </div>
+
+        <div class="flex items-center gap-3">
+          <button mat-icon-button [disabled]="!value.trim() || loading">
+            <mat-icon>open_in_full</mat-icon>
+          </button>
+
+          <button
+            mat-icon-button
+            color="primary"
+            [disabled]="!value.trim() || loading"
+            (click)="onSendClick()"
+          >
+            <mat-icon>send</mat-icon>
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <div
+      class="flex items-center justify-between mt-2 text-[11px] text-gray-500"
+    >
+      <div class="flex items-center gap-1">
+        <mat-slide-toggle [(ngModel)]="guidelinesEnabled" color="primary">
+          Guidelines
+        </mat-slide-toggle>
+        <mat-icon class="text-[13px]">help_outline</mat-icon>
+      </div>
+
+      <span>AI-Chat can make mistakes. Please verify the information.</span>
+    </div>
+  </div>
+</div>

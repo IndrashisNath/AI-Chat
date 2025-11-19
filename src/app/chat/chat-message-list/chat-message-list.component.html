@@ -1,0 +1,91 @@
+@if (chat) {
+  
+  @if (chat.messages.length > 0) {
+    <div class="w-full flex justify-center">
+      <div class="w-full max-w-3xl space-y-4 text-sm leading-relaxed">
+
+        @for (msg of chat.messages; track msg.id) {
+          <div
+            class="max-w-[70%] rounded-2xl px-4 py-3"
+            [ngClass]="{
+              'bg-blue-50 ml-auto': msg.role === 'user',
+              'bg-gray-100 mr-auto': msg.role === 'assistant'
+            }"
+          >
+            <p class="whitespace-pre-wrap break-words break-all">
+              {{ msg.content }}
+            </p>
+
+            <div class="mt-1 text-[11px] text-gray-400">
+              {{ msg.createdAt | date:'HH:mm' }}
+              <span class="uppercase ml-1">
+                {{ msg.role === 'user' ? 'You' : 'AI' }}
+              </span>
+            </div>
+
+            @if (msg.hasSources && msg.sources?.length) {
+              <div class="mt-2 flex items-center justify-between">
+                <div class="flex items-center gap-1">
+                  <button mat-icon-button>
+                    <mat-icon>sentiment_satisfied</mat-icon>
+                  </button>
+
+                  <button mat-icon-button>
+                    <mat-icon>sentiment_dissatisfied</mat-icon>
+                  </button>
+                </div>
+
+                <button
+                  mat-button
+                  class="px-0 text-xs flex items-center gap-1"
+                  (click)="toggleSources(msg.id)"
+                >
+                  <span>Sources</span>
+                  <mat-icon >
+                    {{ showSourcesForMessageId === msg.id ? 'expand_less' : 'expand_more' }}
+                  </mat-icon>
+                </button>
+              </div>
+
+              @if (showSourcesForMessageId === msg.id) {
+                <div class="mt-2 space-y-2">
+                  @for (s of msg.sources; track s.id) {
+                    <div
+                      class="border rounded-lg px-3 py-2 bg-white hover:bg-gray-50 cursor-pointer"
+                    >
+                      <div class="text-xs font-medium">{{ s.title }}</div>
+                      <div class="text-[11px] text-blue-600 truncate">{{ s.url }}</div>
+
+                      @if (s.description) {
+                        <div class="text-[11px] text-gray-500">
+                          {{ s.description }}
+                        </div>
+                      }
+                    </div>
+                  }
+                </div>
+              }
+            }
+          </div>
+        }
+      </div>
+    </div>
+
+    @if (error) {
+      <div class="text-center text-red-500 py-4">
+        {{ error }}
+      </div>
+    }
+
+  } @else {
+    <div class="h-full flex items-center justify-center text-gray-400">
+      <div class="text-center">
+        <div class="mb-4 bg-gray-100 rounded-lg px-10 py-8">
+          Logo
+        </div>
+        <p>Ask anything to start a new conversation.</p>
+      </div>
+    </div>
+  }
+}
+

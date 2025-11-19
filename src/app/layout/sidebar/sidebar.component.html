@@ -1,0 +1,67 @@
+<div class="h-full flex flex-col text-sm">
+  <div class="p-3 border-b">
+    <button
+      mat-button
+      color="primary"
+      class="w-full !justify-start"
+      (click)="onNewChat()"
+    >
+      <mat-icon class="mr-2">add</mat-icon>
+      New Chat
+    </button>
+
+    <button mat-button class="w-full !justify-start mt-1">
+      <mat-icon class="mr-2">description</mat-icon>
+      Template library
+    </button>
+  </div>
+
+  <div class="px-3 py-2 flex items-center justify-between">
+    <span class="font-medium text-gray-700">Chats</span>
+    <mat-slide-toggle
+      [ngModel]="(autoSave$ | async) ?? true"
+      (ngModelChange)="onToggleAutoSave($event)"
+      color="primary"
+      class="text-xs"
+    >
+      Auto-Save
+    </mat-slide-toggle>
+  </div>
+
+  <div class="px-3">
+    <mat-form-field appearance="outline" class="w-full">
+      <mat-icon matPrefix>search</mat-icon>
+      <input
+        matInput
+        placeholder="Search chats"
+        [(ngModel)]="searchTerm"
+        (ngModelChange)="onSearchChange($event)"
+      />
+    </mat-form-field>
+  </div>
+
+  <mat-nav-list class="flex-1 overflow-y-auto">
+    @for (chat of (filteredChats$ | async) ?? []; track chat.id) {
+    <a mat-list-item (click)="onSelectChat(chat.id)" class="cursor-pointer">
+      <div class="flex items-center justify-between">
+        <div class="truncate">{{ chat.title }}</div>
+
+        <button
+          mat-icon-button
+          [matMenuTriggerFor]="menu"
+          (click)="$event.stopPropagation()"
+        >
+          <mat-icon class="text-gray-500">more_vert</mat-icon>
+        </button>
+      </div>
+
+      <mat-menu #menu="matMenu">
+        <button mat-menu-item (click)="deleteChat(chat.id)">
+          <mat-icon>delete</mat-icon>
+          <span>Delete chat</span>
+        </button>
+      </mat-menu>
+    </a>
+    }
+  </mat-nav-list>
+</div>

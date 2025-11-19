@@ -1,0 +1,63 @@
+<div class="h-full flex flex-col px-6 py-4 bg-white rounded-2xl shadow-sm">
+  @if ((currentChat$ | async)?.messages?.length! > 0) {
+  <app-chat-header
+    [chat]="(currentChat$ | async) ?? null"
+    [autoSave]="(autoSave$ | async) ?? true"
+    (saveClicked)="onSaveChat()"
+  ></app-chat-header>
+  }
+
+  <section class="flex items-center gap-6 text-sm mb-4 px-4 py-2">
+    <div class="flex flex-col">
+      <span class="text-xs text-gray-500">Model</span>
+      <mat-select [value]="'gpt-4-turbo'" class="min-w-[140px]">
+        <mat-option value="gpt-4-turbo">GPT-4 Turbo</mat-option>
+        <mat-option value="gpt-3.5">GPT-3.5</mat-option>
+      </mat-select>
+    </div>
+
+    <div class="flex flex-col">
+      <span class="text-xs text-gray-500">Provider</span>
+      <mat-select [value]="'azure'" class="min-w-[120px]">
+        <mat-option value="azure">Azure</mat-option>
+        <mat-option value="openai">OpenAI</mat-option>
+      </mat-select>
+    </div>
+
+    <div class="flex flex-col">
+      <span class="text-xs text-gray-500">Creativity</span>
+      <mat-select [value]="'1.0'" class="min-w-[130px]">
+        <mat-option value="0.2">0.2 (precise)</mat-option>
+        <mat-option value="0.7">0.7 (balanced)</mat-option>
+        <mat-option value="1.0">1.0 (high)</mat-option>
+      </mat-select>
+    </div>
+
+    <span class="flex-1"></span>
+
+    <button mat-button>
+      <mat-icon class="mr-1">summarize</mat-icon>
+      AI-Briefing
+    </button>
+  </section>
+
+  <section class="flex-1 rounded-xl2 shadow-sm flex flex-col overflow-hidden">
+    @if (loading$ | async) {
+    <mat-progress-bar mode="indeterminate" color="primary"></mat-progress-bar>
+    }
+
+    <div class="flex-1 overflow-y-auto px-8 py-4">
+      <app-chat-message-list
+        [chat]="(currentChat$ | async) ?? null"
+        [error]="error$ | async"
+      ></app-chat-message-list>
+    </div>
+
+    <div class="border-t px-6 py-4 bg-shell">
+      <app-chat-input
+        [loading]="(loading$ | async) ?? false"
+        (send)="onSend($event)"
+      ></app-chat-input>
+    </div>
+  </section>
+</div>

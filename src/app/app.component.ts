@@ -1,12 +1,20 @@
 import { Component } from '@angular/core';
 import { RouterOutlet } from '@angular/router';
+import { MatTabsModule } from '@angular/material/tabs';
+import { MatIconModule } from '@angular/material/icon';
+import { SidebarComponent } from './layout/sidebar/sidebar.component';
+import { ChatShellComponent } from './chat/chat-shell/chat-shell.component';
 
 @Component({
   selector: 'app-root',
-  imports: [RouterOutlet],
+  imports: [
+    RouterOutlet,
+    MatTabsModule,
+    MatIconModule,
+    SidebarComponent,
+    ChatShellComponent,
+  ],
   templateUrl: './app.component.html',
-  styleUrl: './app.component.scss'
+  styleUrl: './app.component.scss',
 })
-export class AppComponent {
-  title = 'ai-chat';
-}
+export class AppComponent {}
