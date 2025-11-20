@@ -11,6 +11,7 @@ import { MatSlideToggleModule } from '@angular/material/slide-toggle';
 import { BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { ChatStoreService } from '../../core/services/chat-store.service';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-sidebar',
@@ -30,6 +31,7 @@ import { ChatStoreService } from '../../core/services/chat-store.service';
 })
 export class SidebarComponent {
   private store = inject(ChatStoreService);
+  private snack = inject(MatSnackBar);
   autoSave$ = this.store.autoSave$;
 
   private searchTermSubject = new BehaviorSubject<string>('');
@@ -64,5 +66,11 @@ export class SidebarComponent {
 
   deleteChat(id: string) {
     this.store.deleteChat(id);
+
+    this.snack.open('Chat deleted successfully!', '', {
+      duration: 3000,
+      horizontalPosition: 'right',
+      verticalPosition: 'bottom',
+    });
   }
 }
